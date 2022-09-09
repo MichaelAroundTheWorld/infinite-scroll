@@ -1,24 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import { Item } from "./data/data.model";
 
 function App() {
+  const [items, setItems] = useState<Item[]>([{ bg: "#CB6B56" }]);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setItems([
+        ...items,
+        { bg: "#" + Math.floor(Math.random() * 16777215).toString(16) },
+      ]);
+    }, 100);
+    console.log(interval);
+    return () => clearInterval(interval);
+  }, [items]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {items.map((item, index) => (
+        <div key={index} className="box" style={{ background: item.bg }}>
+          <p>{index}</p>
+        </div>
+      ))}
     </div>
   );
 }
